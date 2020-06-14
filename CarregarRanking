@@ -1,0 +1,61 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+from tabulate import tabulate
+
+def ordRank():
+    with open('rank.txt','r',encoding="UTF-8") as rank:
+        rankList = rank.read().split("\n")
+        ranksDic = []
+        for rank in rankList:
+            if rank:
+                splitRank = rank.split(',')
+                ranksDic.append({
+                    "nome":splitRank[0],
+                    "pontos":int(splitRank[1])
+                    })
+        ranksDic = sorted(ranksDic, key=lambda ranks: ranks['pontos'], reverse = True)
+        return ranksDic
+
+def showTop10(ranks):
+    print ("""
+            ``````````````                                                                              
+    smmmmmmmmmmmmm:    -/oooo+/-     -:::::::::-.`         `-:::::::`   `:+ooo+/:.              
+    smmmmmmmmmmmmm:  -hmmmmhdmmmh:  `ymmmmmdohmmmdo`      -dmmmmmmmd-  /dmmmmmmmmmh:            
+    `..+mmmmmmy...` -dmmmmh`ommmmm/ `ymmmmmy`+mmmmm:      :mmmmmmmmd- .dmmmmo +mmmmd.           
+        +mmmmmms     smmmmms +mmmmmy``ymmmmmo smmmmm-      ./-dmmmmmd- /mmmmm- .dmmmm/           
+        +mmmmmmo     smmmmm+ ommmmms `ymmmmmdhmmmmh:         .dmmmmmd- :mmmmm- -dmmmm/           
+        +mmmmmm+     .dmmmms`hmmmmh.  ymmmmmo::--`           `dmmmmmd. `ymmmmh+ymmmmh`           
+        -hhhhhh:      .+hdmdymmdy/`   ohhhhh:                `shhhhhs`  `/sddmmddho:`            
+                        ``````                                             ````                 
+    """)
+
+    tabelalist = []
+    for rank in ranks[:10]:
+        tabelalist.append([rank["nome"], rank["pontos"]])
+
+    print(tabulate(tabelalist, headers=ranks[0].keys(), tablefmt='pretty'))
+
+def showAll(ranks):
+    print("""
+    -yyyyyyyyyyyyyyso/.                                                                         
+    /mmmmmmmmd+sdmmmmmd+`     .+oooooooooo:      :ooooo/`  .ooooo+.  :ooooooo-  `-oo.           
+    /mmmmmmmmy``smmmmmmd-     ommmmmmmmmmmd-     smmmmmmy- +mmmmmd-  +mmmmmmm+`:sdmmd+`         
+    /mmmmmmmms``smmmmmmy`    -dmmmmmmodmmmms`    smmmmmmmd+ommmmmd-  +mmmmmmmyymmmmdy:          
+    /mmmmmmmmy:odmmmmd+.    `ommmmmmy.ymmmmd-    smmmmmmmmmmmmmmmd-  +mmmmmmmmmmmmo-`           
+    :mmmmmmmmmmmmmmmmh+`    -dmmmmmmo.ommmmms`   smmmmmmmmmmmmmmmd-  /mmmmmmmmmmmms:`           
+    -dmmmmmmmdsdmmmmmmmh:  `smmmmmmmdddmmmmmd:   ommmmmhohmmmmmmmd-  /mmmmmmmdmmmmmmy/`         
+    .hmmmmmmmh.-ymmmmmmds. -dmmmmmmd+++dmmmmmy   ommmmmy`.smmmmmmd-  /mmmmmmm::ymmmmmh:         
+    `/sssssss+` `ohdys/.`  :sssssss/   /osssso`  :sssso/  `:ssssso`  -sssssss` `/yyo-`          
+                  ```                                                            `              
+    """)
+
+    tabelalist = []
+    for rank in ranks:
+        tabelalist.append([rank["nome"], rank["pontos"]])
+
+    print(tabulate(tabelalist, headers=ranks[0].keys(), tablefmt='pretty'))
+
+
+if __name__ == "__main__":
+    showTop10(ordRank())
