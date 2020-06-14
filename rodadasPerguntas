@@ -1,0 +1,110 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+import json
+import random
+import keyboard
+import os
+import time
+
+perguntaId = 0
+opcaoId = 0
+totalPerguntas = 0
+perguntasFeitas = []
+opcaoCerta = ""
+opcoes = []
+pontos = 0
+jogador = ""
+
+with open('perguntas.json', "r", encoding="UTF-8") as json_perguntas:
+    perguntas = json.load(json_perguntas)
+totalPerguntas = len(perguntas)
+
+def saveRank(data):
+    with open('rank.txt', 'a', encoding="UTF-8") as rank:
+        data = str(data)+'\n'
+        rank.write(data)
+
+def sortearPergunta(totalPerguntas):
+    global perguntasFeitas
+    global jogador
+    if not len(perguntasFeitas) == totalPerguntas:
+        perguntaAleatoria = random.randint(0,totalPerguntas-1)
+        if perguntaAleatoria in perguntasFeitas:
+            return sortearPergunta(totalPerguntas)
+        else:
+            perguntasFeitas.append(perguntaAleatoria)
+            return perguntaAleatoria
+    else:
+        print("Fim de jogo,",jogador+"!\nSua pontuação é de", pontos)
+        saveRank(jogador+","+ str(pontos))
+        os._exit(0)
+
+def carregarPergunta(perguntaAtual = None, respostaAtual = 0, isLoaded = False):
+    global perguntaId
+    global opcaoCerta
+    global opcoes
+    global totalPerguntas
+    opcaoCerta = ''
+    opcoesFeitas = []
+    if perguntaAtual == None:
+        perguntaId = sortearPergunta(totalPerguntas)
+    else:
+        perguntaId = perguntaAtual
+    pergunta = perguntas[perguntaId]['pergunta']
+    opcaoCerta = perguntas[perguntaId]['resposta']
+    if not isLoaded:
+        opcoes = perguntas[perguntaId]['opcoes']
+        random.shuffle(opcoes)
+
+    os.system("cls" if os.name == "nt" else "clear")
+
+    print(pergunta)
+
+    for opcaoId, opcao in enumerate(opcoes):
+        if opcaoId == respostaAtual:
+            print (">> ", opcao, " <<")
+        else:
+            print (opcao)
+
+
+def up():
+    global opcaoId
+    global perguntaId
+    opcaoId -= 0 if opcaoId-1 < 0 else 1
+    carregarPergunta(perguntaId, opcaoId, isLoaded=True)
+    
+def down():
+    global opcaoId
+    global perguntaId
+    totalOpcoes = len(perguntas[perguntaId]['opcoes'])
+    opcaoId += 1 if opcaoId+1 < totalOpcoes else 0
+    carregarPergunta(perguntaId, opcaoId, isLoaded=True)
+
+def responder():
+    global opcaoId
+    global pontos
+    if opcoes[opcaoId] == opcaoCerta:
+        pontos += 10
+        print ("Resposta certa, 10 pontos =D")
+        # print("Explicação da resposta:\n")
+        time.sleep(1)
+        carregarPergunta()
+        
+    else:
+        print("Resposta Errada =´(")
+        print("A reposta correta é a alternativa", opcaoCerta)
+        time.sleep(1)
+        carregarPergunta()
+        
+def iniciarRodada(nome = ""):
+    global jogador
+    jogador = nome
+    carregarPergunta()
+    keyboard.add_hotkey('up', up)
+    keyboard.add_hotkey('down', down)
+    keyboard.add_hotkey('enter', responder)
+    keyboard.wait()
+
+if __name__ == "__main__":
+    iniciarRodada()
