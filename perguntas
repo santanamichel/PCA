@@ -1,0 +1,22 @@
+[
+    {
+        "pergunta":"No ambiente caseiro, um aspecto de grande importância para a sustentabilidade ambiental é a:?",
+        "opcoes":["Reciclagem do Lixo", "Reutilização do fósforo", "Reciclagem de metal", "Reciclagem de madeira"],
+        "resposta":"Reciclagem do Lixo"
+    },
+    {
+        "pergunta":"Qual das alternativas abaixo é um exemplo de reciclagem?",
+        "opcoes":["Acúmulo de matéria-prima.", "Coleta Seletiva", "Reutilização de garrafa pet", "Incineração"],
+        "resposta":"Coleta Seletiva"
+    },
+    {
+        "pergunta":"Qual a cor da lixeira específica para o Metal?",
+        "opcoes":["Laranja", "Azul", "Amarela", "Marrom"],
+        "resposta":"Amarela"
+    },
+    {
+        "pergunta":"De acordo com a Sustentabilidade, o que são os 3 R's?",
+        "opcoes":["Reajustar, reciclar e refazer", "Reduzir, reutilizar e reciclar", "Reparar, reciclar e reutilizar", "Repensar, refazer e realizar"],
+        "resposta":"Amarela"
+    }
+]
