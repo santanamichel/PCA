@@ -1,0 +1,93 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+import os
+import keyboard
+import rodadasPerguntas
+import carregarRanking
+
+menuSelectionId = 0
+menuSelectedItem = ""
+menuOptions = ["{}Iniciar Jogo{}", "{}Ver Ranking{}", "{}Sair{}"]
+nome = ''
+
+def show_menu(selection):
+    os.system("cls" if os.name == "nt" else "clear")
+    print("\nBem-vindo, ", nome)
+    print("\nMenu Principal:\n")
+    global menuSelectedItem
+    for index, option in enumerate(menuOptions):
+        if selection == index:
+            menuSelectedItem = option.format("","")
+            option = option.format("> "," <")
+        else:
+            option = option.format("  ","  ")
+        print(option)
+
+def up():
+    global menuSelectionId
+    menuSelectionId -= 0 if menuSelectionId-1 < 0 else 1
+    show_menu(menuSelectionId)
+    
+def down():
+    global menuSelectionId
+    menuItens = len(menuOptions)
+    menuSelectionId += 1 if menuSelectionId+1 < menuItens else 0
+    show_menu(menuSelectionId)
+
+def itemAction():
+    global menuSelectedItem
+    if "Iniciar Jogo" == menuSelectedItem:
+        rodadasPerguntas.iniciarRodada(nome)
+
+    if "Ver Ranking" == menuSelectedItem:
+        rank = carregarRanking.ordRank()
+        carregarRanking.showAll(rank)
+
+    if "Sair" == menuSelectedItem:
+        os._exit(0)
+
+def iniciarJogo():
+    global nome
+    print("""
+
+                            `.-:.`                 
+                    ``     `:++oo+oo+/                
+                .---.---:+:/:::-:++:                
+                .-----:/::-----:+ooo+`              
+                `.--/oooooo/:---:-:://:.--          
+            ``.---/+/+o+:------------.-----.`      
+        .::``  ``.-...-------......-----://:::-`      
+    .+:++////--::-:..--..--...-//:::://:--::----`  
+    `----------//+-`....`````/::::-------------::. 
+    ``......--------..`````````-------------.--..... 
+    ..---..-----------.....``..---------..---...--`  
+    ```````---..----------..````----..````--------   
+        `..``..-.---...` `..``..````.. `.```....   
+            ``   ``````.``.   -`  `...``              
+                        `...```-`.:.                  
+                        `--::-::                   
+                            .-::-/:                   
+                            ..:--+-                   
+                            ..:-:/`                   
+                        `-::-:/                    
+                        .-:/:::                    
+                        `-::-:-:`                   
+                        .:-::/--:                   
+                        `----/+-::.                  
+                        `----////-/:-`                
+                    ``......-:::::::::-.``            
+                        ``````````                  
+    """)
+    print("Olá, Bem-vindo ao jogo")
+
+    nome = input("Qual seu nome?\n")
+
+    show_menu(menuSelectionId)
+    keyboard.add_hotkey('up', up)
+    keyboard.add_hotkey('down', down)
+    keyboard.wait('enter')
+    itemAction()
+
+if __name__ == "__main__":
+    iniciarJogo()
